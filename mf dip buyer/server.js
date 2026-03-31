@@ -1910,7 +1910,7 @@ async function fetchPortfolioNav(entries) {
     return null;
   }
 
-  for (const entry of entries) {
+  await mapWithConcurrency(entries, 5, async (entry) => {
     const requestedName = normalizeWhitespace(entry?.requestedSchemeName || entry?.scheme_name || "");
     const resolvedName = normalizeWhitespace(entry?.resolvedSchemeName || requestedName);
     const lookupNames = uniqueStrings([requestedName, resolvedName]);
@@ -1927,7 +1927,7 @@ async function fetchPortfolioNav(entries) {
         error: "No NAV match found",
         returns: {},
       });
-      continue;
+      return;
     }
 
     const cached = getCachedValue(cache.nav, schemeMatch.code);
@@ -1941,7 +1941,7 @@ async function fetchPortfolioNav(entries) {
         nav_match_source: matchedFrom,
         returns: cached,
       });
-      continue;
+      return;
     }
 
     toFetch.push({
@@ -1950,7 +1950,7 @@ async function fetchPortfolioNav(entries) {
       schemeMatch,
       matchedFrom,
     });
-  }
+  });
 
   if (toFetch.length > 0) {
     await mapWithConcurrency(toFetch, 10, async ({ requestedName, resolvedName, schemeMatch, matchedFrom }) => {
