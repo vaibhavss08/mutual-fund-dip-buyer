@@ -178,31 +178,35 @@
             </div>
 
             <!-- Stock filter (selective buying) -->
-            <div id="stock-filter" class="stock-filter hidden">
-              <div class="stock-filter__header">
-                <p class="overline">Stock Filter</p>
-                <p class="stock-filter__sub">Deselect stocks you don't want to buy into. Only checked stocks will be allocated capital.</p>
-                <div class="stock-filter__actions">
-                  <button class="btn btn--ghost btn--xs" id="filter-select-all" type="button">Select All</button>
-                  <button class="btn btn--ghost btn--xs" id="filter-deselect-all" type="button">Deselect All</button>
+            <details id="stock-filter" class="disclosure-card stock-filter hidden" open style="margin-top: 24px; margin-bottom: 0; box-shadow: none; padding-top: 0; border-top: none;">
+              <summary class="disclosure-summary">
+                <span class="overline" style="margin: 0; letter-spacing: 0.1em;">View Stock Preferences</span>
+              </summary>
+              <div class="disclosure-body">
+                <div class="stock-filter__header" style="margin-top: -4px;">
+                  <p class="stock-filter__sub">Deselect stocks you don't want to buy into. Only checked stocks will be allocated capital.</p>
+                  <div class="stock-filter__actions">
+                    <button class="btn btn--ghost btn--xs" id="filter-select-all" type="button">Select All</button>
+                    <button class="btn btn--ghost btn--xs" id="filter-deselect-all" type="button">Deselect All</button>
+                  </div>
                 </div>
-              </div>
-              <div id="stock-filter-list" class="stock-filter__grid"></div>
+                <div id="stock-filter-list" class="stock-filter__grid"></div>
 
-              <!-- Add More Stocks -->
-              <div class="stock-add-section">
-                <p class="overline">Add More Stocks</p>
-                <p class="stock-add__sub">Search 926 stocks to add ones you want exposure to, even if they're not dipping in your portfolio.</p>
-                <div class="stock-add__search-wrap">
-                  <input id="stock-add-search" type="text" class="stock-add__input" placeholder="Search by name or symbol..." autocomplete="off" />
-                  <div id="stock-add-ac" class="stock-add__ac"></div>
+                <!-- Add More Stocks -->
+                <div class="stock-add-section">
+                  <p class="overline">Add More Stocks</p>
+                  <p class="stock-add__sub">Search 926 stocks to add ones you want exposure to, even if they're not dipping in your portfolio.</p>
+                  <div class="stock-add__search-wrap">
+                    <input id="stock-add-search" type="text" class="stock-add__input" placeholder="Search by name or symbol..." autocomplete="off" />
+                    <div id="stock-add-ac" class="stock-add__ac"></div>
+                  </div>
+                  <div id="stock-add-tags" class="stock-add__tags"></div>
                 </div>
-                <div id="stock-add-tags" class="stock-add__tags"></div>
-              </div>
 
-              <!-- Integrated summary for manual stock coverage -->
-              <div id="stock-add-results" class="stock-add__results hidden"></div>
-            </div>
+                <!-- Integrated summary for manual stock coverage -->
+                <div id="stock-add-results" class="stock-add__results hidden"></div>
+              </div>
+            </details>
 
             <div class="engine-actions">
               <button id="generate-recs" class="btn btn--accent btn--bottom" type="button">Calculate Buy Plan</button>
