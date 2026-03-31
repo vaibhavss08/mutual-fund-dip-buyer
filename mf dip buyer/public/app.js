@@ -1079,7 +1079,16 @@ async function runAnalysis() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ portfolioText: rawText, timeframe: currentTimeframe }),
     });
-    const payload = await response.json();
+    let payload;
+    try {
+      payload = await response.json();
+    } catch {
+      throw new Error(
+        response.status === 404 || response.status === 502 || response.status === 503
+          ? "Server is waking up — please wait a few seconds and try again."
+          : `Server returned an unexpected response (${response.status}). Please try again.`
+      );
+    }
     if (!response.ok) throw new Error(payload.error || "Analysis failed.");
 
     lastAnalysisData = payload;
