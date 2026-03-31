@@ -1,0 +1,13 @@
+{
+  "name": "indian-mf-dip-buyer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Manual Indian mutual fund portfolio dip buyer with live constituent moves.",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test_server.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.8.0"
+  }
+}

@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MF Dashboard</title>
+    <meta name="description" content="Portfolio dip scanner — find where to add money when stocks dip." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <!-- Subtle bg decoration -->
+    <div class="bg-noise" aria-hidden="true"></div>
+    <div class="bg-glow bg-glow--tl" aria-hidden="true"></div>
+    <div class="bg-glow bg-glow--br" aria-hidden="true"></div>
+
+    <div class="shell">
+
+      <!-- ─── GLOBAL NAV ─── -->
+      <nav class="topnav">
+        <div class="topnav__brand">
+          <span class="topnav__icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          </span>
+          <span class="topnav__title">MF Dashboard</span>
+        </div>
+      </nav>
+
+        <!-- ─── HERO ─── -->
+        <header class="hero">
+          <p class="hero__eyebrow">Portfolio scanner</p>
+          <h1 class="hero__title">Find the real dip in your mutual funds.</h1>
+          <p class="hero__sub">Import your portfolio, review live dips, then build a clean buy plan around the stocks and funds you actually care about.</p>
+        </header>
+
+        <!-- ─── INPUT SECTION ─── -->
+        <section class="input-section">
+          <div class="input-section__header">
+            <div class="scheme-search-inline">
+              <input id="scheme-search" class="search-input-sm" type="text" placeholder="Search fund database..." />
+            </div>
+          </div>
+
+          <div class="input-body" id="manual-view">
+            <!-- Extension data banner (shown when extension pushes data) -->
+            <div id="ext-data-banner" class="ext-banner hidden">
+              <div class="ext-banner__icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <div class="ext-banner__text">
+                <strong>Portfolio imported from extension</strong>
+                <span id="ext-fund-count"></span>
+              </div>
+              <button class="btn btn--ghost btn--xs" id="ext-show-raw" type="button">Show raw text</button>
+            </div>
+
+            <textarea id="portfolio-text" spellcheck="false" placeholder="Paste from extension, or type scheme names:&#10;&#10;Parag Parikh Flexi Cap Fund | 50000&#10;HDFC Flexi Cap Fund | 35000&#10;ICICI Prudential Bluechip Fund | 25000"></textarea>
+            <div class="input-helpers">
+              <span class="helper-chip">One scheme per line</span>
+              <span class="helper-chip">Add <code>| amount</code> for weighted exposure</span>
+              <span class="helper-chip"><code>(FOF)</code> qualifiers respected</span>
+            </div>
+            <div class="action-row">
+              <button id="analyze-button" class="btn btn--primary" type="button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+                Run Dip Scan
+              </button>
+              <button class="btn btn--ghost" id="load-sample" type="button">Insert Sample</button>
+            </div>
+          </div>
+
+          <!-- Scheme Search Results (slides down below the search input) -->
+          <div id="scheme-results" class="scheme-results hidden-results">Type at least 3 characters.</div>
+        </section>
+
+        <!-- ─── STATUS ─── -->
+        <div id="status-banner" class="status-banner hidden"></div>
+
+        <!-- ─── RESULTS ─── -->
+        <section id="results" class="results hidden">
+
+          <!-- Summary strip -->
+          <div class="summary-strip" id="summary-grid"></div>
+
+          <div class="results-nav" id="results-nav">
+            <button class="results-nav__btn active" data-result-tab="overview" type="button">Overview</button>
+            <button class="results-nav__btn" data-result-tab="buy" type="button">Buy Plan</button>
+            <button class="results-nav__btn" data-result-tab="holdings" type="button">Holdings</button>
+          </div>
+
+          <div class="results-panel active" data-result-panel="overview">
+
+          <!-- Timeframe toggle -->
+          <div class="toolbar">
+            <div class="toolbar__left">
+              <h2 class="section-title">Dip Analysis</h2>
+            </div>
+            <div class="toolbar__right">
+              <div class="tf-toggle" id="timeframe-toggle">
+                <button class="tf-btn active" data-time="1d">Today</button>
+                <button class="tf-btn" data-time="5d">5 Days</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Analysis notes -->
+          <div id="analysis-notes" class="notes-row hidden"></div>
+
+          <!-- Resolved Schemes -->
+          <details class="disclosure-card resolved-section" id="resolved-details">
+            <summary class="disclosure-summary">
+              <span>Resolved schemes</span>
+              <span class="disclosure-meta" id="parsed-funds-count">0</span>
+            </summary>
+            <div id="parsed-funds" class="resolved-tags disclosure-body"></div>
+          </details>
+
+          <!-- Portfolio NAV Performance -->
+          <div class="data-card" id="nav-perf-card">
+            <div class="data-card__header nav-perf-head">
+              <div>
+                <p class="overline">NAV Tracker</p>
+                <h2 class="section-title">Portfolio Fund Performance</h2>
+              </div>
+              <div class="nav-controls">
+                <select id="nav-sort-col" class="nav-select">
+                  <option value="today">Today</option>
+                  <option value="yesterday">Yesterday</option>
+                  <option value="1w">This Week</option>
+                  <option value="2w">Last 2 Weeks</option>
+                  <option value="1m">1 Month</option>
+                  <option value="3m">3 Months</option>
+                  <option value="6m">6 Months</option>
+                  <option value="nav">NAV</option>
+                  <option value="requested_scheme_name">Fund Name</option>
+                </select>
+                <select id="nav-sort-dir" class="nav-select">
+                  <option value="desc">↓ Desc</option>
+                  <option value="asc">↑ Asc</option>
+                </select>
+              </div>
+            </div>
+            <div id="nav-perf-body">
+              <div class="empty-state" id="nav-perf-loading" style="display:none">Fetching NAV data for your portfolio funds…</div>
+            </div>
+          </div>
+          </div>
+
+          <div class="results-panel" data-result-panel="buy">
+
+          <!-- ─── ALLOCATION ENGINE ─── -->
+          <div class="engine-card" id="strategy-section">
+            <div class="engine-card__header">
+              <div>
+                <p class="overline">Allocation Engine</p>
+                <h2 class="section-title">Where should you put your money?</h2>
+              </div>
+            </div>
+
+            <div class="engine-controls">
+              <div class="engine-controls__amount">
+                <label class="form-label" for="invest-amount">Investment Amount</label>
+                <input id="invest-amount" class="form-input form-input--big" type="text" placeholder="10,000" inputmode="numeric" />
+              </div>
+              <div class="engine-controls__modes" id="mode-cards">
+                <button class="mode-chip active" data-mode="aggressive" type="button">
+                  <span class="mode-chip__dot mode-chip__dot--red"></span>Aggressive
+                </button>
+                <button class="mode-chip" data-mode="balanced" type="button">
+                  <span class="mode-chip__dot mode-chip__dot--teal"></span>Balanced
+                </button>
+                <button class="mode-chip" data-mode="conservative" type="button">
+                  <span class="mode-chip__dot mode-chip__dot--green"></span>Conservative
+                </button>
+              </div>
+            </div>
+
+            <!-- Stock filter (selective buying) -->
+            <div id="stock-filter" class="stock-filter hidden">
+              <div class="stock-filter__header">
+                <p class="overline">Stock Filter</p>
+                <p class="stock-filter__sub">Deselect stocks you don't want to buy into. Only checked stocks will be allocated capital.</p>
+                <div class="stock-filter__actions">
+                  <button class="btn btn--ghost btn--xs" id="filter-select-all" type="button">Select All</button>
+                  <button class="btn btn--ghost btn--xs" id="filter-deselect-all" type="button">Deselect All</button>
+                </div>
+              </div>
+              <div id="stock-filter-list" class="stock-filter__grid"></div>
+
+              <!-- Add More Stocks -->
+              <div class="stock-add-section">
+                <p class="overline">Add More Stocks</p>
+                <p class="stock-add__sub">Search 926 stocks to add ones you want exposure to, even if they're not dipping in your portfolio.</p>
+                <div class="stock-add__search-wrap">
+                  <input id="stock-add-search" type="text" class="stock-add__input" placeholder="Search by name or symbol..." autocomplete="off" />
+                  <div id="stock-add-ac" class="stock-add__ac"></div>
+                </div>
+                <div id="stock-add-tags" class="stock-add__tags"></div>
+              </div>
+
+              <!-- Integrated summary for manual stock coverage -->
+              <div id="stock-add-results" class="stock-add__results hidden"></div>
+            </div>
+
+            <div class="engine-actions">
+              <button id="generate-recs" class="btn btn--accent btn--bottom" type="button">Calculate Buy Plan</button>
+            </div>
+
+            <div id="rec-output"></div>
+          </div>
+          </div>
+
+          <div class="results-panel" data-result-panel="holdings">
+
+          <!-- Dip Ranking Table -->
+          <div class="data-card">
+            <div class="data-card__header">
+              <h2 class="section-title">Portfolio Dip Ranking</h2>
+            </div>
+            <div id="dip-ranking" class="table-wrap"></div>
+          </div>
+
+          <!-- Fund Breakdown -->
+          <div class="data-card">
+            <div class="data-card__header">
+              <h2 class="section-title">Fund Composition</h2>
+            </div>
+            <div id="fund-tabs" class="fund-tabs"></div>
+            <div id="fund-tab-contents"></div>
+          </div>
+          </div>
+          </div>
+
+        </section>
+
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

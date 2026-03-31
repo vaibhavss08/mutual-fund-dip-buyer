@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        width: 320px;
+        padding: 20px;
+        margin: 0;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #fafafa;
+        color: #18181b;
+      }
+      .header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+      .logo {
+        width: 28px; height: 28px;
+        background: #2563eb;
+        border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        color: white;
+      }
+      .logo svg { width: 16px; height: 16px; }
+      h2 {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+      .desc {
+        margin: 0 0 16px;
+        font-size: 12.5px;
+        color: #52525b;
+        line-height: 1.5;
+      }
+      .platforms {
+        display: flex; flex-wrap: wrap; gap: 4px;
+        margin-bottom: 16px;
+      }
+      .platform-pill {
+        display: inline-flex; align-items: center;
+        padding: 3px 8px; border-radius: 999px;
+        background: #f4f4f5; border: 1px solid #e4e4e7;
+        font-size: 11px; font-weight: 600; color: #52525b;
+      }
+      button#extract-btn {
+        width: 100%;
+        padding: 11px;
+        background: #18181b;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 13.5px;
+        cursor: pointer;
+        transition: all 0.15s;
+        letter-spacing: -0.01em;
+      }
+      button#extract-btn:hover {
+        background: #27272a;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0,0,0,.12);
+      }
+      button#extract-btn:disabled {
+        background: #a1a1aa;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+      #status {
+        margin-top: 10px;
+        font-size: 11.5px;
+        font-weight: 500;
+        line-height: 1.5;
+        color: #52525b;
+      }
+      .success { color: #16a34a !important; }
+      .error { color: #dc2626 !important; }
+      .step { display: block; margin-top: 3px; }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+      </div>
+      <h2>MF Dip Buyer</h2>
+    </div>
+    <p class="desc">Open your portfolio page on a supported platform, then click Extract to pull your holdings into the dip scanner.</p>
+    <div class="platforms">
+      <span class="platform-pill">IndMoney</span>
+      <span class="platform-pill">MFCentral</span>
+      <span class="platform-pill">Coin</span>
+      <span class="platform-pill">Groww</span>
+    </div>
+    <button id="extract-btn">Extract & Analyze</button>
+    <div id="status"></div>
+    <script src="popup.js"></script>
+  </body>
+</html>

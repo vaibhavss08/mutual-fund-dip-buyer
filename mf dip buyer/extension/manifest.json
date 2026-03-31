@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "MF Portfolio Extractor",
+  "version": "1.0",
+  "description": "Extracts mutual fund holdings from IndMoney, MFCentral, Coin (Zerodha), and Groww and sends them to your local MF Dip Buyer app.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Extract Portfolio"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*",
+    "*://*.indmoney.com/*",
+    "*://*.mfcentral.com/*",
+    "*://*.kite.zerodha.com/*",
+    "*://*.coin.zerodha.com/*",
+    "*://*.groww.in/*"
+  ]
+}

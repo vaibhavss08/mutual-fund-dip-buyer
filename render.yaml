@@ -1,0 +1,15 @@
+services:
+  # ── MF Dip Buyer ──────────────────────────────────────
+  - type: web
+    name: mf-dip-buyer
+    runtime: node
+    rootDir: mf dip buyer
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MF_SHARED_DATA_DIR
+        value: /opt/render/project/src/shared-data
+      - key: NODE_VERSION
+        value: "20.11.0"
+    healthCheckPath: /health
+    plan: free
