@@ -973,62 +973,9 @@ function renderFundBreakdown(data) {
 }
 
 function renderAnalysisNotes(data) {
-  const cards = [];
-
-  if (data.fundErrors?.length) {
-    const skipped = data.fundErrors
-      .map((item) => `<li><strong>Line ${item.lineNumber}:</strong> ${escapeHtml(item.requestedSchemeName)}<span>${escapeHtml(item.error)}</span></li>`)
-      .join("");
-    cards.push(`
-      <article class="note-card note-danger">
-        <p class="note-kicker">Skipped</p>
-        <h3>${data.fundErrors.length} line(s) skipped</h3>
-        <ul class="note-list">${skipped}</ul>
-      </article>`);
-  }
-
-  if (data.unresolvedHoldings?.length) {
-    const preview = data.unresolvedHoldings.slice(0, 6);
-    const unresolved = preview
-      .map((item) => `<li><strong>${escapeHtml(item.company)}</strong><span>${escapeHtml(item.fund)} · ${escapeHtml(item.reason)}</span></li>`)
-      .join("");
-    const extra = data.unresolvedHoldings.length > preview.length
-      ? `<p class="note-footnote">+${data.unresolvedHoldings.length - preview.length} more</p>`
-      : "";
-    cards.push(`
-      <article class="note-card note-muted">
-        <p class="note-kicker">Ticker Gaps</p>
-        <h3>${data.unresolvedHoldings.length} missing quotes</h3>
-        <ul class="note-list">${unresolved}</ul>
-        ${extra}
-      </article>`);
-  }
-
-  if (data.warnings?.length) {
-    const warnings = data.warnings.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
-    cards.push(`
-      <article class="note-card note-neutral">
-        <p class="note-kicker">Notes</p>
-        <h3>Keep in mind</h3>
-        <ul class="note-list plain">${warnings}</ul>
-      </article>`);
-  }
-
-  if (!cards.length) {
-    analysisNotes.classList.add("hidden");
-    analysisNotes.innerHTML = "";
-    return;
-  }
-
-  analysisNotes.innerHTML = `
-    <details class="disclosure-card">
-      <summary class="disclosure-summary">
-        <span>Details, skipped lines, and warnings</span>
-        <span class="disclosure-meta">${cards.length} section${cards.length > 1 ? "s" : ""}</span>
-      </summary>
-      <div class="disclosure-body notes-row">${cards.join("")}</div>
-    </details>`;
-  analysisNotes.classList.remove("hidden");
+  analysisNotes.classList.add("hidden");
+  analysisNotes.innerHTML = "";
+  // Section removed for production: no skipped lines, warnings, or details shown
 }
 
 function setActiveResultTab(tabId) {
