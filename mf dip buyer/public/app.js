@@ -740,7 +740,6 @@ function isLikelyNavNoiseName(value) {
 }
 
 function appendSchemeToPortfolio(name) {
-  tabManual.click();
   // If extension data was hiding the textarea, show it
   if (extensionDataLoaded) {
     portfolioText.classList.remove("ext-hidden");
@@ -1408,7 +1407,6 @@ function wireNavControls() {
 
 // ── Extension Data Handover (On Page Load) ──
 function applyExtensionPortfolioText(text) {
-  tabManual.click();
   portfolioText.value = text;
 
   extensionDataLoaded = true;
